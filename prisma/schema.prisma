@@ -1,0 +1,59 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  image         String?
+  password      String?
+  isPremium     Boolean   @default(false)
+  premiumUntil  DateTime?
+  memberTitle   String?
+  provider      String    @default("email")
+  role          String    @default("USER")
+  comments      Comment[]
+  createdAt     DateTime  @default(now())
+}
+
+model Donghua {
+  id          String    @id @default(cuid())
+  title       String    @unique
+  slug        String    @unique
+  synopsis    String    @default("")
+  genre       String[]  @default([])
+  studio      String    @default("")
+  year        Int       @default(2024)
+  status      String    @default("Ongoing")
+  poster      String    @default("")
+  episodes    Episode[]
+  comments    Comment[]
+  createdAt   DateTime  @default(now())
+}
+
+model Episode {
+  id        String  @id @default(cuid())
+  number    Int
+  title     String
+  videoUrl  String
+  isAIAdded Boolean @default(false)
+  donghua   Donghua @relation(fields: [donghuaId], references: [id])
+  donghuaId String
+  createdAt DateTime @default(now())
+}
+
+model Comment {
+  id        String  @id @default(cuid())
+  content   String
+  userId    String
+  user      User    @relation(fields: [userId], references: [id])
+  donghuaId String
+  donghua   Donghua @relation(fields: [donghuaId], references: [id])
+  createdAt DateTime @default(now())
+}

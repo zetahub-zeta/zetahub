@@ -1,0 +1,19 @@
+name: AI Auto Upload
+
+on:
+  schedule:
+    - cron: '0 * * * *'
+  workflow_dispatch:
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: npm ci
+      - run: npm run ai:upload
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
