@@ -1,11 +1,10 @@
-
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
+import "./globals.css"; // ✅ Pastikan file globals.css ada
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const meta Metadata = {
+export const metadata: Metadata = {
   title: "Zetahub - Streaming Donghua",
   description: "Nonton donghua terbaru dan populer",
 };
