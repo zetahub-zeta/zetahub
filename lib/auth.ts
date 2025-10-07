@@ -2,16 +2,16 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
+import type { AuthOptions } from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
 
 const prisma = new PrismaClient();
 
-export const authOptions = {
+export const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
-    {
-      id: "credentials",
+    CredentialsProvider({
       name: "Credentials",
-      type: "credentials",
       credentials: {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" }
@@ -25,7 +25,7 @@ export const authOptions = {
         const isValid = await bcrypt.compare(credentials.password, user.password);
         return isValid ? user : null;
       }
-    }
+    })
   ],
   session: { strategy: "jwt" },
   callbacks: {
