@@ -1,12 +1,10 @@
-name: AI Auto Upload
+name: Deploy Database Migration
 
 on:
-  schedule:
-    - cron: '0 * * * *'
   workflow_dispatch:
 
 jobs:
-  upload:
+  migrate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -14,6 +12,6 @@ jobs:
         with:
           node-version: 18
       - run: npm ci
-      - run: npm run ai:upload
+      - run: npx prisma migrate deploy
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
