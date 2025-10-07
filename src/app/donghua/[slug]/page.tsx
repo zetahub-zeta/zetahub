@@ -1,12 +1,12 @@
 // src/app/donghua/[slug]/page.tsx
 import { PrismaClient } from "@prisma/client";
-import { getServerSession } from "next-auth"; // ✅ Cukup ini saja
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 
 export default async function DonghuaPage({ params }: { params: { slug: string } }) {
-  // ✅ JANGAN import authOptions dari file API
-  const session = await getServerSession(); // Otomatis pakai konfigurasi NextAuth
-
+  const session = await getServerSession(authOptions); // ✅ Kirim authOptions
   const prisma = new PrismaClient();
+
   const donghua = await prisma.donghua.findUnique({
     where: { slug: params.slug },
     include: {
