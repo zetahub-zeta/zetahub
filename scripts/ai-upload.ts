@@ -1,3 +1,4 @@
+
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
@@ -19,7 +20,7 @@ async function main() {
 
     if (!existing) {
       await prisma.episode.create({
-         {
+        data: {
           number: ep.episodeNumber,
           title: ep.title,
           videoUrl: "https://example.com/video.mp4",
