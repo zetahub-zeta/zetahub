@@ -19,4 +19,7 @@
   .premium-badge {
     @apply bg-secondary text-white text-xs font-bold px-2 py-1 rounded-full;
   }
+  .admin-badge {
+    @apply bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full;
+  }
 }
