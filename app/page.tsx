@@ -1,72 +1,96 @@
-// src/app/page.tsx
-import { PrismaClient } from "@prisma/client";
+'use client';
+import { useEffect } from 'react';
 
-export default async function Home() {
-  const prisma = new PrismaClient();
-  const donghua = await prisma.donghua.findMany({
-    take: 10,
-    orderBy: { createdAt: "desc" },
-  });
+export default function Home() {
+  // Animasi bintang jatuh
+  useEffect(() => {
+    const createStar = () => {
+      const star = document.createElement('div');
+      star.style.position = 'absolute';
+      star.style.pointerEvents = 'none';
+      star.style.left = `${Math.random() * 100}vw`;
+      star.style.top = '-20px';
+      star.style.fontSize = `${Math.random() * 20 + 10}px`;
+      star.style.color = '#8B5CF6';
+      star.style.opacity = '0.8';
+      star.style.animation = 'fall 3s linear forwards';
+      star.textContent = '★';
+      document.body.appendChild(star);
+
+      // Hapus setelah animasi
+      setTimeout(() => star.remove(), 3000);
+    };
+
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes fall {
+        to {
+          transform: translateY(100vh) rotate(360deg);
+          opacity: 0;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+
+    const interval = setInterval(createStar, 500);
+    return () => {
+      clearInterval(interval);
+      style.remove();
+    };
+  }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-purple-900 to-black text-white">
       {/* Header */}
-      <header className="bg-white shadow-sm">
+      <header className="bg-black/50 backdrop-blur-sm border-b border-purple-800">
         <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-primary">Zetahub</h1>
+          <h1 className="text-2xl font-bold text-purple-400">Zetahub</h1>
           <nav>
-            <a href="/premium" className="text-gray-700 mx-2 hover:text-primary">Premium</a>
-            <a href="/admin/login" className="text-gray-700 mx-2 hover:text-primary">Admin</a>
+            <a href="/premium" className="text-gray-300 mx-2 hover:text-purple-300 transition">Premium</a>
+            <a href="/admin/login" className="text-gray-300 mx-2 hover:text-red-400 transition">Admin</a>
           </nav>
         </div>
       </header>
 
-      {/* Hero Section */}
-      <section className="bg-gradient-to-r from-primary to-purple-700 text-white py-16">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Nonton Donghua Terbaru</h1>
-          <p className="text-xl mb-6 max-w-2xl mx-auto">Ribuan episode, update harian, kualitas HD — semua dalam satu platform.</p>
-          <a href="#donghua" className="btn-primary inline-block px-6 py-3 text-lg">
-            Jelajahi Sekarang
-          </a>
+      {/* Hero */}
+      <section className="py-16 text-center px-4">
+        <h1 className="text-3xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+          Nonton Donghua Terbaru
+        </h1>
+        <p className="text-gray-300 mb-6 max-w-2xl mx-auto">
+          Ribuan episode, update harian, kualitas HD — semua dalam satu platform.
+        </p>
+        <a 
+          href="#donghua" 
+          className="bg-gradient-to-r from-purple-600 to-indigo-700 hover:from-purple-700 hover:to-indigo-800 text-white font-medium py-2 px-6 rounded-lg inline-block transition shadow-lg"
+        >
+          Jelajahi Sekarang
+        </a>
+      </section>
+
+      {/* Konten */}
+      <section id="donghua" className="py-12 px-4">
+        <h2 className="text-2xl font-bold mb-8 text-center text-purple-300">Donghua Terbaru</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 max-w-6xl mx-auto">
+          {[1,2,3,4,5].map(i => (
+            <div key={i} className="bg-gray-800/50 rounded-xl overflow-hidden border border-purple-900 hover:border-purple-600 transition group">
+              <div className="h-40 bg-gradient-to-br from-gray-900 to-black flex items-center justify-center">
+                <span className="text-purple-400 font-bold text-center px-2">Donghua {i}</span>
+              </div>
+              <div className="p-2">
+                <h3 className="font-bold text-sm text-white line-clamp-2">Judul Donghua Sangat Panjang {i}</h3>
+                <div className="flex justify-between items-center mt-1">
+                  <span className="text-xs text-gray-400">2024</span>
+                  <span className="bg-green-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">HD</span>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
-      {/* Donghua Terbaru */}
-      <section id="donghua" className="py-12">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold mb-8 text-center text-dark">Donghua Terbaru</h2>
-          {donghua.length === 0 ? (
-            <div className="text-center py-12">
-              <p className="text-gray-500">Belum ada donghua. Tambahkan via <a href="/admin/login" className="text-primary hover:underline">Admin Panel</a>.</p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-              {donghua.map((d) => (
-                <a key={d.id} href={`/donghua/${d.slug}`} className="card group block">
-                  <div className="h-48 bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
-                    <img src={d.poster} alt={d.title} className="w-full h-full object-cover" />
-                  </div>
-                  <div className="p-3">
-                    <h3 className="font-bold text-sm line-clamp-2">{d.title}</h3>
-                    <div className="flex justify-between items-center mt-2">
-                      <span className="text-xs text-gray-500">{d.year}</span>
-                      <span className="premium-badge">HD</span>
-                    </div>
-                  </div>
-                </a>
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="bg-dark text-white py-8 mt-12">
-        <div className="container mx-auto px-4 text-center">
-          <p>&copy; 2024 Zetahub. All rights reserved.</p>
-          <p className="text-gray-400 mt-2">Platform streaming donghua terlengkap.</p>
-        </div>
+      <footer className="text-center py-6 text-gray-500 text-sm mt-12 border-t border-gray-800">
+        &copy; 2024 Zetahub. All rights reserved.
       </footer>
     </div>
   );
