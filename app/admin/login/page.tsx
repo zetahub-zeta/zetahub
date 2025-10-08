@@ -17,14 +17,14 @@ export default function AdminLogin() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <form onSubmit={login} className="p-6 border rounded shadow w-80">
-        <h2 className="text-xl font-bold mb-4">Admin Login</h2>
+    <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white">
+      <form onSubmit={login} className="p-8 border border-purple-700 rounded-xl shadow-lg bg-gray-800 w-96">
+        <h2 className="text-3xl font-bold mb-6 text-purple-400 text-center">Admin Login</h2>
         <input
           value={u}
           onChange={(e) => setU(e.target.value)}
           placeholder="Username"
-          className="w-full p-2 border mb-2"
+          className="w-full p-3 bg-gray-700 border border-gray-600 rounded-md mb-4 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
           required
         />
         <input
@@ -32,12 +32,12 @@ export default function AdminLogin() {
           value={p}
           onChange={(e) => setP(e.target.value)}
           placeholder="Password"
-          className="w-full p-2 border mb-4"
+          className="w-full p-3 bg-gray-700 border border-gray-600 rounded-md mb-6 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
           required
         />
         <button
           type="submit"
-          className="w-full bg-blue-600 text-white p-2 rounded"
+          className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold p-3 rounded-lg transition duration-300"
         >
           Login
         </button>
