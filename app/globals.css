@@ -5,11 +5,13 @@
 
 @layer base {
   body {
+    /* Base styles, can be overridden by specific page styling */
     @apply bg-gray-50 text-gray-900;
   }
 }
 
 @layer components {
+  /* Keeping these for consistency, though some might be overridden inline */
   .btn-primary {
     @apply bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-lg transition;
   }
