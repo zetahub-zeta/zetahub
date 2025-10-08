@@ -1,10 +1,10 @@
-// src/app/donghua/[slug]/page.tsx
+
 import { PrismaClient } from "@prisma/client";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 
 export default async function DonghuaPage({ params }: { params: { slug: string } }) {
-  const session = await getServerSession(authOptions); // ✅ Kirim authOptions
+  const session = await getServerSession(authOptions);
   const prisma = new PrismaClient();
 
   const donghua = await prisma.donghua.findUnique({
@@ -31,12 +31,9 @@ export default async function DonghuaPage({ params }: { params: { slug: string }
 
       {firstEpisode && (
         <div className="mb-8">
-          <video
-            src={firstEpisode.videoUrl}
-            controls
-            className="w-full rounded bg-black"
-            style={{ aspectRatio: "16/9" }}
-          />
+          <div className="video-player">
+            <p>▶ Video Player (Dummy)</p>
+          </div>
           <p className="mt-2 text-lg font-semibold">Episode {firstEpisode.number}: {firstEpisode.title}</p>
         </div>
       )}
@@ -45,9 +42,13 @@ export default async function DonghuaPage({ params }: { params: { slug: string }
         <h2 className="text-xl font-bold mb-2">Daftar Episode</h2>
         <div className="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-8 gap-2">
           {donghua.episodes.map((ep) => (
-            <div key={ep.id} className="border p-2 text-center rounded">
+            <a
+              key={ep.id}
+              href={`/donghua/${params.slug}?ep=${ep.number}`}
+              className="border p-2 text-center rounded hover:bg-gray-100"
+            >
               {ep.number}
-            </div>
+            </a>
           ))}
         </div>
       </div>
