@@ -11,13 +11,13 @@
 
 @layer components {
   .btn-primary {
-    @apply bg-primary hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-lg transition;
+    @apply bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-lg transition;
   }
   .card {
     @apply bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition;
   }
   .premium-badge {
-    @apply bg-secondary text-white text-xs font-bold px-2 py-1 rounded-full;
+    @apply bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-full;
   }
   .admin-badge {
     @apply bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full;
