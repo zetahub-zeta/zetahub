@@ -19,7 +19,4 @@
   .premium-badge {
     @apply bg-secondary text-white text-xs font-bold px-2 py-1 rounded-full;
   }
-  .video-player {
-    @apply w-full h-64 bg-black rounded-lg flex items-center justify-center text-white;
-  }
 }
