@@ -37,6 +37,22 @@ async function main() {
     },
   });
 
+  // Buat user non-premium
+  const userPassword = await bcrypt.hash("user123", 10);
+  const regularUser = await prisma.user.upsert({
+    where: { email: "user@zetahub.com" },
+    update: {},
+    create: {
+      name: "Andi User",
+      email: "user@zetahub.com",
+      password: userPassword,
+      isPremium: false,
+      memberTitle: "Member Biasa",
+      provider: "email",
+      role: "USER",
+    },
+  });
+
   // Buat beberapa donghua
   const donghuaData = [
     {
